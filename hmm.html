@@ -1,0 +1,219 @@
+<!doctype html>
+<html>
+
+<head>
+    <title>
+        Essential Studio for JavaScript : Digital Gauge - Digital Clock
+    </title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" charset="utf-8">
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="//cdn.syncfusion.com/15.4.0.17/js/web/flat-azure/ej.web.all.min.css" rel="stylesheet" />
+    <link href="15.4.0.17/themes/web/content/default.css" rel="stylesheet" />
+    <link href="15.4.0.17/themes/web/content/default-responsive.css" rel="stylesheet" />
+    <script type="text/javascript" src="//cdn.syncfusion.com/js/assets/external/jquery-2.1.4.min.js"></script>
+    <script src="//cdn.syncfusion.com/js/assets/external/jquery.easing.1.3.min.js"></script>
+    <script type="text/javascript" src="//cdn.syncfusion.com/js/assets/external/excanvas.min.js"></script>
+    <script type="text/javascript" src="//cdn.syncfusion.com/15.4.0.17/js/web/ej.web.all.min.js"></script>
+    <script src="15.4.0.17/scripts/web/properties.js" type="text/javascript"></script>
+    <!--Add custom scripts here -->
+    <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.20.0/moment.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/moment-timezone/0.5.14/moment-timezone.min.js"></script>
+    <script>
+        !function (t, e) { "function" == typeof define && define.amd ? define(["moment-timezone"], e) : "object" == typeof exports ? module.exports = e(require("moment-timezone"), require("child_process")) : t.Cron = e(t.moment) }(this, function (t, e) { function n(e, n, i) { if (this.source = e, n) { if (-1 === t.tz.names().indexOf(n)) throw new Error("Invalid timezone."); this.zone = n } i && (this.utcOffset = i); var s = this; r.map(function (t) { s[t] = {} }), this.source instanceof Date ? (this.source = t(this.source), this.realDate = !0) : (this._parse(), this._verifyParse()) } function i(t) { var e, n; switch (typeof t) { case "string": e = (n = t.split(" ")).shift(), t = a.bind(void 0, e, n); break; case "object": if (e = t && t.command) { n = t.args; var i = t.options; t = a.bind(void 0, e, n, i) } }return t } function s(t, e, s, o, r, a, f, l) { var d = t; return "string" != typeof t && 1 == arguments.length && (e = t.onTick, s = t.onComplete, a = t.context, o = t.start || t.startNow || t.startJob, r = t.timeZone, f = t.runOnInit, d = t.cronTime, l = t.utcOffset), this.context = a || this, this._callbacks = [], this.onComplete = i(s), this.cronTime = new n(d, r, l), u.call(this, i(e)), f && c.call(this), o && h.call(this), this } var o = {}, r = ["second", "minute", "hour", "dayOfMonth", "month", "dayOfWeek"], a = e && e.spawn; n.constraints = [[0, 59], [0, 59], [0, 23], [1, 31], [0, 11], [0, 6]], n.monthConstraints = [31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31], n.parseDefaults = ["0", "*", "*", "*", "*", "*"], n.aliases = { jan: 0, feb: 1, mar: 2, apr: 3, may: 4, jun: 5, jul: 6, aug: 7, sep: 8, oct: 9, nov: 10, dec: 11, sun: 0, mon: 1, tue: 2, wed: 3, thu: 4, fri: 5, sat: 6 }, n.prototype = { _verifyParse: function () { for (var t = Object.keys(this.month), e = 0; e < t.length; e++) { for (var i = t[e], s = n.monthConstraints[parseInt(i, 10)], o = !1, r = Object.keys(this.dayOfMonth), a = 0; a < r.length; a++)r[a] <= s && (o = !0); o || console.warn("Month '" + i + "' is limited to '" + s + "' days.") } }, sendAt: function (e) { var n = this.realDate ? this.source : t(); if (this.zone && (n = n.tz(this.zone)), this.utcOffset && (n = n.utcOffset(this.utcOffset)), this.realDate) return n; var i = new Date, s = n.seconds(), o = Math.abs(s - i.getSeconds()); if ((0 == o || 1 == o && i.getMilliseconds() <= n.milliseconds()) && (n = n.add(1, "s")), isNaN(e) || e < 0) return n = this._getNextDateFrom(n); for (var r = []; e > 0; e--)n = this._getNextDateFrom(n), r.push(t(n)), e > 1 && n.add(1, "s"); return r }, getTimeout: function () { return Math.max(-1, this.sendAt() - t()) }, toString: function () { return this.toJSON().join(" ") }, toJSON: function () { var t = this; return r.map(function (e) { return t._wcOrAll(e) }) }, _getNextDateFrom: function (e) { var n = t(e); if ("Invalid date" == n.toString()) return console.log("ERROR: You specified an invalid date."), n; if (this.realDate && e < new Date && console.log("WARNING: Date in past. Will never be fired."), this.realDate) return n; for (; ;) { var i = n - e, s = new Date(n); if (n.month() in this.month) if (n.date() in this.dayOfMonth) if (n.day() in this.dayOfWeek) if (n.hours() in this.hour) if (n.minutes() in this.minute) { if (n.seconds() in this.second) break; s = t(n), n.seconds(59 == n.seconds() && i > 6e4 ? 0 : n.seconds() + 1), n <= s && (n = this._findDST(s)) } else s = t(n), n.minutes(59 == n.minutes() && i > 36e5 ? 0 : n.minutes() + 1), n.seconds(0), n <= s && (n = this._findDST(s)); else s = t(n), n.hours(23 == n.hours() && i > 864e5 ? 0 : n.hours() + 1), n.minutes(0), n.seconds(0), n <= s && (n = this._findDST(s)); else n.add(1, "d"), n.hours(0), n.minutes(0), n.seconds(0), n <= s && (n = this._findDST(s)); else n.add(1, "d"), n.hours(0), n.minutes(0), n.seconds(0); else n.add(1, "M"), n.date(1), n.hours(0), n.minutes(0), n.seconds(0) } return n }, _findDST: function (e) { for (var n = t(e); n <= e;)n.add(1, "s"); return n }, _wcOrAll: function (t) { if (this._hasAll(t)) return "*"; var e = []; for (var n in this[t]) e.push(n); return e.join(",") }, _hasAll: function (t) { for (var e = n.constraints[r.indexOf(t)], i = e[0], s = e[1]; i < s; i++)if (!(i in this[t])) return !1; return !0 }, _parse: function () { for (var t, e = n.aliases, i = (this.source.replace(/[a-z]{1,3}/gi, function (t) { if ((t = t.toLowerCase()) in e) return e[t]; throw new Error("Unknown alias: " + t) }).replace(/^\s\s*|\s\s*$/g, "").split(/\s+/)), s = 0, o = r.length; s < r.length; s++)t = i[s - (o - i.length)] || n.parseDefaults[s], this._parseField(t, r[s], n.constraints[s]) }, _parseField: function (t, e, n) { for (var i, s = /^(\d+)(?:-(\d+))?(?:\/(\d+))?$/g, o = this[e], r = n[0], a = n[1], u = (t = t.replace(/\*/g, r + "-" + a)).split(","), c = 0; c < u.length; c++) { if (!u[c].match(s)) throw new Error("Field (" + t + ") cannot be parsed"); u[c].replace(s, function (t, e, n, s) { s = parseInt(s) || 1, e = Math.min(Math.max(r, ~~Math.abs(e)), a), n = n ? Math.min(a, ~~Math.abs(n)) : e, i = e; do { o[i] = !0, i += s } while (i <= n) }) } } }; var u = function (t) { "function" == typeof t && this._callbacks.push(t) }; s.prototype.addCallback = u, s.prototype.setTime = function (t) { if (!(t instanceof n)) throw new Error("'time' must be an instance of CronTime."); this.stop(), this.cronTime = t }, s.prototype.nextDate = function () { return this.cronTime.sendAt() }; var c = function () { for (var t = this._callbacks.length - 1; t >= 0; t--)this._callbacks[t].call(this.context, this.onComplete) }; s.prototype.fireOnTick = c, s.prototype.nextDates = function (t) { return this.cronTime.sendAt(t) }; var h = function () { function t(t) { n = Date.now(), s._timeout = setTimeout(e, t) } function e() { var e = n + o - Date.now(); if (e > 0) { var a = s.cronTime.getTimeout(); a > e && (a = e), r += a } s.lastExecution = new Date, r ? (r > i ? (r -= i, o = i) : (o = r, r = 0), t(o)) : (s.running = !1, s.runOnce || s.start(), s.fireOnTick()) } if (!this.running) { var n, i = 2147483647, s = this, o = this.cronTime.getTimeout(), r = 0; this.cronTime.realDate && (this.runOnce = !0), o >= 0 ? (this.running = !0, o > i && (r = o - i, o = i), t(o)) : this.stop() } }; return s.prototype.start = h, s.prototype.lastDate = function () { return this.lastExecution }, s.prototype.stop = function () { this._timeout && clearTimeout(this._timeout), this.running = !1, "function" == typeof this.onComplete && this.onComplete() }, o.job = function (t, e, n, i, o, r, a) { return new s(t, e, n, i, o, r, a) }, o.time = function (t, e) { return new n(t, e) }, o.sendAt = function (t) { return o.time(t).sendAt() }, o.timeout = function (t) { return o.time(t).getTimeout() }, o.CronJob = s, o.CronTime = n, o });
+    </script>
+
+</head>
+
+<body>
+    <div class="container-fluid">
+        <h1 style="text-align: center; color:blue">TAKT ADHERENCE</h3>
+            <div class="row">
+                <div class="col-md-3 col-md-offset-1">
+                    <p>PLAN</p>
+                    <input type="text" id="plan" name="plan" value="0" disabled style="margin-bottom: 25px;">
+                </div>
+                <div class="col-md-3">
+                    <p>ACTUAL</p>
+                    <input type="text" id="actual" name="actual" value="0" disabled style="margin-bottom: 25px;">
+                </div>
+                <div class="col-md-3">
+                    <p>EFFICIENCY</p>
+                    <input type="text" id="efficiency" name="efficiency" value="0" disabled style="margin-bottom: 25px;">
+                </div>
+            </div>
+
+            <div class="row">
+                <h2 style="text-align: center;">MACHINE PERFORMANCE</h3>
+
+                    <div class="col-md-10 col-md-offset-1">
+                        <div class="table-responsive">
+                            <table class="table table-bordered">
+                                <tr>
+                                    <th colspan="2">G7</th>
+                                    <th colspan="2">FORM
+                                        <br>300</th>
+                                    <th colspan="2">TEK4
+                                        <br>#1</th>
+                                    <th colspan="2">TEK4
+                                        <br>#2</th>
+                                    <th colspan="2">TEK4
+                                        <br>#3</th>
+                                    <th colspan="2">AIR
+                                        <br>FLOW</th>
+                                </tr>
+                                <tr>
+                                    <td>P</td>
+                                    <td>A</td>
+                                    <td>P</td>
+                                    <td>A</td>
+                                    <td>P</td>
+                                    <td>A</td>
+                                    <td>P</td>
+                                    <td>A</td>
+                                    <td>P</td>
+                                    <td>A</td>
+                                    <td>P</td>
+                                    <td>A</td>
+                                </tr>
+                                <tr>
+                                    <td class="plan"></td>
+                                    <td class="actual"></td>
+                                    <td class="plan"></td>
+                                    <td class="actual"></td>
+                                    <td class="plan"></td>
+                                    <td class="actual"></td>
+                                    <td class="plan"></td>
+                                    <td class="actual"></td>
+                                    <td class="plan"></td>
+                                    <td class="actual"></td>
+                                    <td class="plan"></td>
+                                    <td class="actual"></td>
+                                </tr>
+                            </table>
+
+                        </div>
+                    </div>
+            </div>
+
+
+
+            <div class="row">
+                <div class="col-md-5 col-md-offset-1">
+                    <p id="digitalframe1" style="text-align: center">Date/Time</p>
+                    <div id="DateTimeClock"></div>
+                </div>
+
+                <div class="col-md-5">
+                    <p style="text-align: center">TAKT Rate countdown Timer</p>
+                    <div id="CountDownClock"></div>
+                </div>
+
+            </div>
+    </div>
+
+    <script type="text/javascript">
+
+        (function () {
+            document.addEventListener('DOMContentLoaded', () => {
+
+                console.log("Code begins ==> ", moment().format())
+
+                window.Cron = Cron
+
+                const MAX_COUNTER_VALUE = 5
+                let countDownTimer = MAX_COUNTER_VALUE
+                let taktAdherencePlan = 0
+
+                let digiclock = $("#DateTimeClock").data("ejDigitalGauge")
+                let digicounter = $("#CountDownClock").data("ejDigitalGauge")
+
+                const startSchedule = '* 30 6 * * 1-5'
+                const repeatSchedule = '* * * * * 1-5'
+
+                const job = new Cron.CronJob({
+                    cronTime: repeatSchedule,
+                    onTick: function () {
+
+                        if (moment().day() === 1) {
+                            console.log("Monday");
+                            if (moment().hour() + "" + moment().minute() >= 0630) {
+                                this.cronTime = new Cron.CronTime(repeatSchedule)
+                                console.log("After schedule ==> ", moment().format())
+                            } else {
+                                this.cronTime = new Cron.CronTime(startSchedule)
+                                countDownTimer = MAX_COUNTER_VALUE
+                                console.log("Before Schedule ==> ", moment().format())
+                            }
+                        } else if (moment().day() === 5) {
+                            console.log("Friday")
+                            if (moment().hour() + "" + moment().minute() >= 2030) {
+                                this.cronTime = new Cron.CronTime(startSchedule)
+                                countDownTimer = MAX_COUNTER_VALUE
+                                console.log("After Schedule ==> ", moment().format())
+                            }
+                        } else if (moment().day() >= 1 && moment().day() <= 5) { //only for testing, redundant and should be removed 
+                            console.log("Weekday run ==> ", moment().format())
+                        }
+
+
+                        if (countDownTimer <= 0) {
+                            countDownTimer = MAX_COUNTER_VALUE
+                            taktAdherencePlan++
+                        } else {
+                            countDownTimer--
+                        }
+
+                        if (digiclock != undefined) {
+                            digiclock.setValue(0, moment().format('LT'));
+                            digiclock.setValue(1, moment().format('llll').substring(0, 11));
+                        }
+
+                        if (digicounter != undefined) {
+                            const seconds = ((countDownTimer % 60) < 10) ? `0${countDownTimer % 60}` : (countDownTimer % 60)
+                            const minutes = Math.floor(countDownTimer / 60)
+                            digicounter.setValue(0, `${minutes}:${seconds}`)
+                        }
+
+                        document.querySelector("#plan").value = taktAdherencePlan
+                        $(".plan").html(taktAdherencePlan)
+                    },
+                    start: true
+                })
+            })
+        })()
+
+        $(function () {
+            $("#DateTimeClock").ejDigitalGauge({
+                width: 300,
+                height: 150,
+                load: "loadGaugeTheme",
+                items: [{
+                    segmentSettings: { width: 1, spacing: 0, },
+                    characterSettings: { opacity: 0.8, },
+                    value: "Loading...",
+                    position: { x: 52, y: 52 }
+                },
+                {
+                    segmentSettings: { width: 1, spacing: 0, },
+                    characterSettings: { opacity: 0.8, },
+                    value: "Loading...",
+                    position: { x: 52, y: 85 }
+                }]
+            });
+
+            $("#CountDownClock").ejDigitalGauge({
+                width: 300,
+                height: 150,
+                load: "loadGaugeTheme",
+                items: [{
+                    segmentSettings: { width: 1, spacing: 0, },
+                    characterSettings: { opacity: 0.8, },
+                    value: "Loading...",
+                    position: { x: 52, y: 52 }
+                }]
+            });
+        });
+    </script>
+</body>
+
+</html>
